@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MR-MOMIN TikTok Downloader</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'VT323', monospace;
+        }
+
+        body {
+            background: black;
+            color: #00ff00;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            border: 3px solid #00ff00;
+            padding: 20px;
+            border-radius: 12px;
+            background: #0a0a0a;
+            box-shadow: 0px 0px 15px #00ff00;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #00ff00;
+            text-shadow: 0px 0px 10px #00ff00;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 90%;
+            padding: 12px;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            background: black;
+            color: #00ff00;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .download-btn {
+            padding: 12px;
+            margin: 10px;
+            font-size: 18px;
+            color: black;
+            background: #00ff00;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .download-btn:hover {
+            background: #005f00;
+            color: white;
+        }
+
+        #video-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        video {
+            width: 100%;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+        }
+
+        .dev-message {
+            font-size: 14px;
+            color: #00ff00;
+            margin-top: 15px;
+        }
+
+        .highlight {
+            color: red;
+        }
+
+        .admin-btn {
+            margin-top: 15px;
+            padding: 12px;
+            background: black;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .admin-btn:hover {
+            background: #00ff00;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>💚 MR-MOMIN এর TikTok ডাউনলোডার</h1>
+        <p class="subtitle">টিকটকের ভিডিও লিঙ্কটি এখানে পেস্ট করুন এবং ওয়াটারমার্ক ছাড়া ডাউনলোড করুন।</p>
+
+        <input type="text" id="url" placeholder="আপনার TikTok লিঙ্কটি এখানে পেস্ট করুন...">
+        <button class="download-btn" onclick="fetchVideo()">🚀 ডাউনলোড করুন</button>
+
+        <div id="video-container">
+            <video id="tiktok-video" controls></video>
+            <button class="download-btn" id="download-video">📥 ভিডিও ডাউনলোড</button>
+            <button class="download-btn" id="download-audio">🎵 অডিও ডাউনলোড</button>
+        </div>
+
+        <p class="dev-message">⚠️ ডেভেলপ করেছেন <span class="highlight">MR-MOMIN</span> | নিরাপদ থাকুন, গোপনীয়তা রক্ষা করুন।</p>
+        <button class="admin-btn" onclick="redirectToTelegram()">👑 অ্যাডমিন</button>
+    </div>
+
+    <script>
+        async function fetchVideo() {
+            const url = document.getElementById('url').value;
+            if (!url) {
+                alert("অনুগ্রহ করে একটি বৈধ TikTok লিঙ্ক দিন!");
+                return;
+            }
+
+            try {
+                let response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
+                let data = await response.json();
+
+                if (data && data.data && data.data.play) {
+                    const videoUrl = data.data.play;
+                    const audioUrl = data.data.music;
+
+                    document.getElementById('tiktok-video').src = videoUrl;
+                    document.getElementById('video-container').style.display = 'block';
+
+                    document.getElementById('download-video').onclick = function () {
+                        let a = document.createElement('a');
+                        a.href = videoUrl;
+                        a.download = "tiktok-video.mp4";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    };
+
+                    document.getElementById('download-audio').onclick = function () {
+                        let a = document.createElement('a');
+                        a.href = audioUrl;
+                        a.download = "tiktok-audio.mp3";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    };
+                } else {
+                    alert("ভিডিও লোড করতে সমস্যা হয়েছে, আবার চেষ্টা করুন!");
+                }
+            } catch (error) {
+                alert("কোনো সমস্যা হয়েছে! লিংক চেক করুন।");
+            }
+        }
+
+        function redirectToTelegram() {
+            window.location.href = "https://t.me/MRMOMIN112";
+        }
+    </script>
+
+</body>
+</html>
